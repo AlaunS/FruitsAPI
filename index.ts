@@ -1,7 +1,7 @@
 
 import { config } from 'dotenv';
 import express from 'express';
-import { DBConnection } from './database/config';
+import { DBConnection } from './database/config.js';
 config();
 
 // Creamos el servidor de express
@@ -17,8 +17,8 @@ app.use(express.json());                // Lectura y parseo del body
 app.use(express.json());
 
 // Rutas
-app.use('/image', require('./routes/images'));
-app.use('/auth', require('./routes/auth'));
+app.use('/image', require('./routes/images.js'));
+app.use('/auth', require('./routes/auth.js'));
 
 // Escuchar peticiones
 app.listen(process.env.PORT, () => {
