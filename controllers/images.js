@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetRandomImage = exports.GetImage = exports.GetAllImages = void 0;
 const aws_sdk_1 = __importDefault(require("aws-sdk"));
+const validateIP_1 = require("../helpers/validateIP");
 require('dotenv').config();
 // Configuracion de AWS
 const s3 = new aws_sdk_1.default.S3({
@@ -23,6 +24,8 @@ const s3 = new aws_sdk_1.default.S3({
 });
 // Funcion para obtener todas las imagenes en el servidor
 const GetAllImages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Validamos que la ip sea de los dispositivos admitidos
+    yield (0, validateIP_1.ValidateIP)(req, res);
     try {
         const data = yield s3.listObjectsV2({ Bucket: "fruit-api" }).promise();
         const images = [];
@@ -54,6 +57,8 @@ exports.GetAllImages = GetAllImages;
 // Funcion para obtener una imagen del servidor
 const GetImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
+    // Validamos que la ip sea de los dispositivos admitidos
+    yield (0, validateIP_1.ValidateIP)(req, res);
     try {
         const data = yield s3.listObjectsV2({ Bucket: "fruit-api" }).promise();
         const image = (_a = data.Contents) === null || _a === void 0 ? void 0 : _a.find((item) => { var _a; return ((_a = item.Key) === null || _a === void 0 ? void 0 : _a.replace('.png', "")) === req.params.name; });
@@ -87,6 +92,8 @@ const GetImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.GetImage = GetImage;
 // Funcion para obtener una imagen random del servidor
 const GetRandomImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // Validamos que la ip sea de los dispositivos admitidos
+    yield (0, validateIP_1.ValidateIP)(req, res);
     try {
         const data = yield s3.listObjectsV2({ Bucket: "fruit-api" }).promise();
         if (data.Contents) {
