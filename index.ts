@@ -1,14 +1,17 @@
 
 import { config } from 'dotenv';
 import express from 'express';
-import cors from 'cors';
 config();
 
 // Creamos el servidor de express
 const app = express();
 
 // Inicializamos cors
-app.use(cors({ origin: '*' }));
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 app.use(express.static('public'));      // Obtenemos el directorio publico
 app.use(express.json());                // Lectura y parseo del body

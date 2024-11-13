@@ -5,12 +5,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = require("dotenv");
 const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
 (0, dotenv_1.config)();
 // Creamos el servidor de express
 const app = (0, express_1.default)();
 // Inicializamos cors
-app.use((0, cors_1.default)({ origin: '*' }));
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 app.use(express_1.default.static('public')); // Obtenemos el directorio publico
 app.use(express_1.default.json()); // Lectura y parseo del body
 // Rutas
