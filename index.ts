@@ -8,7 +8,7 @@ config();
 const app = express();
 
 // Inicializamos cors
-app.use(cors());
+app.use(cors({ origin: '*' }));
 
 app.use(express.static('public'));      // Obtenemos el directorio publico
 app.use(express.json());                // Lectura y parseo del body

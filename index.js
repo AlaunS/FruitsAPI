@@ -10,7 +10,7 @@ const cors_1 = __importDefault(require("cors"));
 // Creamos el servidor de express
 const app = (0, express_1.default)();
 // Inicializamos cors
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({ origin: '*' }));
 app.use(express_1.default.static('public')); // Obtenemos el directorio publico
 app.use(express_1.default.json()); // Lectura y parseo del body
 // Rutas
