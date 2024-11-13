@@ -59,6 +59,7 @@ const LogginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { user, password } = req.body;
     try {
         const newUser = yield User_1.UserModel.findOne({ user });
+        const clientIp = req.ip || req.socket.remoteAddress;
         if (!newUser) {
             return res.status(400).json({
                 ok: true,
@@ -82,7 +83,8 @@ const LogginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 id: newUser.id,
                 user,
                 token,
-                deviceIP: newUser.deviceIP
+                deviceIP: newUser.deviceIP,
+                currentIP: clientIp
             }
         });
     }

@@ -51,6 +51,8 @@ export const LogginUser = async(req: Request, res: Response): Promise<any> => {
     const { user, password } = req.body;
     try {
         const newUser = await UserModel.findOne({ user });
+        const clientIp = req.ip || req.socket.remoteAddress;
+        
         if (!newUser){
             return res.status(400).json({
                 ok: true,
@@ -77,7 +79,8 @@ export const LogginUser = async(req: Request, res: Response): Promise<any> => {
                 id: newUser.id,
                 user,
                 token,
-                deviceIP: newUser.deviceIP
+                deviceIP: newUser.deviceIP,
+                currentIP: clientIp
             }
         })
     } catch (error) {
