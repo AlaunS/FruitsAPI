@@ -1,4 +1,6 @@
+import { config } from "dotenv";
 import mongoose from "mongoose";
+config();
 
 export const DBConnection = async() => {
     try {
