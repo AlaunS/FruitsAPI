@@ -81,8 +81,9 @@ export const GetRandomImage = async(req: Request, res: Response): Promise<any> =
         const data = await s3.listObjectsV2({ Bucket: "fruit-api" }).promise();
         if (data.Contents){
             const size = data.Contents.length;
-            const rand = Math.round(Math.random() * size);
-            const img = data.Contents[rand - 1];
+            const rand = Math.floor(Math.random() * size);
+            const img = data.Contents[rand];
+            console.log(size, rand)
 
             return res.status(200).json({
                 ok: true,

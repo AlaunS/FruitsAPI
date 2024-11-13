@@ -91,8 +91,9 @@ const GetRandomImage = (req, res) => __awaiter(void 0, void 0, void 0, function*
         const data = yield s3.listObjectsV2({ Bucket: "fruit-api" }).promise();
         if (data.Contents) {
             const size = data.Contents.length;
-            const rand = Math.round(Math.random() * size);
-            const img = data.Contents[rand - 1];
+            const rand = Math.floor(Math.random() * size);
+            const img = data.Contents[rand];
+            console.log(size, rand);
             return res.status(200).json({
                 ok: true,
                 msg: "Consulta exitosa",
