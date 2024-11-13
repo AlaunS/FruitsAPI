@@ -1,7 +1,6 @@
 
 import { Response, Request } from 'express';
 import AWS from 'aws-sdk';
-import { ValidateIP } from '../helpers/validateIP';
 
 require('dotenv').config();
 
@@ -14,9 +13,6 @@ const s3 = new AWS.S3({
 
 // Funcion para obtener todas las imagenes en el servidor
 export const GetAllImages = async(req: any, res: Response): Promise<any> => {
-    
-    // Validamos que la ip sea de los dispositivos admitidos
-    await ValidateIP(req, res);
 
     try {
         const data = await s3.listObjectsV2({ Bucket: "fruit-api" }).promise();
@@ -48,9 +44,6 @@ export const GetAllImages = async(req: any, res: Response): Promise<any> => {
 
 // Funcion para obtener una imagen del servidor
 export const GetImage = async(req: Request, res: Response): Promise<any> => {
-
-    // Validamos que la ip sea de los dispositivos admitidos
-    await ValidateIP(req, res);
 
     try {
         const data = await s3.listObjectsV2({ Bucket: "fruit-api" }).promise();
@@ -85,9 +78,6 @@ export const GetImage = async(req: Request, res: Response): Promise<any> => {
 
 // Funcion para obtener una imagen random del servidor
 export const GetRandomImage = async(req: Request, res: Response): Promise<any> => {
-    
-    // Validamos que la ip sea de los dispositivos admitidos
-    await ValidateIP(req, res);
 
     try {
         const data = await s3.listObjectsV2({ Bucket: "fruit-api" }).promise();
