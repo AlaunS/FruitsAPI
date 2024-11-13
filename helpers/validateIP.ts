@@ -15,6 +15,9 @@ export const ValidateIP = async (req: any, res: Response) => {
             return res.status(500).json({
                 ok: false,
                 msg: "Petición denegada: IP no coincide",
+                res: {
+                    ip
+                }
             });
         }
 

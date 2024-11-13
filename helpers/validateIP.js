@@ -25,6 +25,9 @@ const ValidateIP = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res.status(500).json({
                 ok: false,
                 msg: "Petición denegada: IP no coincide",
+                res: {
+                    ip
+                }
             });
         }
         return true;
