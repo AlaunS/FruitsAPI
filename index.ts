@@ -1,10 +1,14 @@
 
 import { config } from 'dotenv';
 import express from 'express';
+import { DBConnection } from './database/config';
 config();
 
 // Creamos el servidor de express
 const app = express();
+
+// Inicializar BD
+DBConnection();
 
 // Inicializamos cors
 app.use((req, res, next) => {
@@ -18,6 +22,7 @@ app.use(express.json());                // Lectura y parseo del body
 
 // Rutas
 app.use('/image', require('./routes/images.js'));
+app.use('/auth', require('./routes/auth.js'));
 
 // Escuchar peticiones
 app.listen(process.env.PORT, () => {
