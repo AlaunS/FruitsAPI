@@ -1,11 +1,27 @@
 
 import { Router } from "express";
 import { GetAllImages, GetImage, GetRandomImage } from "../controllers/images";
-import { CheckSameIP } from "../middlewares/checkIP";
+import { CheckSameIP } from "../middlewares/IP/checkIP";
+import { ConvertIP } from "../middlewares/IP/convertIP";
 
 const router = Router();
-router.get('/random/:user', CheckSameIP, GetRandomImage)   // Obtenemos una imagen aleatoria
-router.get('/all/:user', CheckSameIP, GetAllImages);       // Obtener todas las imagenes del servicio
-router.get('/:name/:user', CheckSameIP, GetImage);         // Obtenemos la imagen introducida por el usuario
+
+// Obtenemos una imagen aleatoria
+router.get('/random/:user', [
+    ConvertIP,
+    CheckSameIP
+], GetRandomImage)   
+
+// Obtener todas las imagenes del servicio
+router.get('/all/:user', [
+    ConvertIP,
+    CheckSameIP
+], GetAllImages);      
+
+// Obtenemos la imagen introducida por el usuario
+router.get('/:name/:user', [
+    ConvertIP,
+    CheckSameIP
+], GetImage);         
 
 module.exports = router;

@@ -9,24 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckSameIP = void 0;
-const User_1 = require("../models/User");
-const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const ip = req.connection.remoteAddress;
-    ;
-    const user = yield User_1.UserModel.findOne({ user: req.params.user });
-    if (user) {
-        if (user.deviceIP !== ip) {
-            return res.status(500).json({
-                ok: false,
-                msg: "Este dispositivo no tiene los privilegios necesarios",
-                res: {
-                    userIP: user.deviceIP,
-                    currIP: req.socket.address()
-                }
-            });
-        }
-    }
+exports.ConvertIP = void 0;
+const ConvertIP = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    req.clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     next();
 });
-exports.CheckSameIP = CheckSameIP;
+exports.ConvertIP = ConvertIP;
