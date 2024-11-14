@@ -11,7 +11,7 @@ const UserSchema = new Schema({
         require: true,
     },
     deviceIP: {
-        type: String,
+        type: Array,
         require: true,
         default: ""
     }

@@ -19,15 +19,19 @@ const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     const ip = req.clientIp;
     const user = yield User_1.UserModel.findOne({ user: req.params.user });
     if (user) {
-        if (!bcryptjs_1.default.compareSync(ip, user.deviceIP)) {
-            return res.status(500).json({
-                ok: false,
-                msg: "Este dispositivo no tiene los privilegios necesarios",
-                res: {
-                    userIP: user.deviceIP,
-                    currIP: ip
-                }
-            });
+        const userIp = user.deviceIP;
+        if (!bcryptjs_1.default.compareSync(ip, userIp[0])) {
+            if (userIp.length > 1) {
+                for (let currIp of userIp)
+                    if (bcryptjs_1.default.compareSync(ip, currIp))
+                        next();
+            }
+            else
+                return res.status(200).json({
+                    ok: true,
+                    msg: "Dispositivo no reconocido",
+                    err: "Para mas ayuda informe al desarrollador",
+                });
         }
     }
     next();

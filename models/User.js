@@ -13,7 +13,7 @@ const UserSchema = new mongoose_1.Schema({
         require: true,
     },
     deviceIP: {
-        type: String,
+        type: Array,
         require: true,
         default: ""
     }

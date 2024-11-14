@@ -8,14 +8,16 @@ export const CheckSameIP = async(req: any, res: Response, next: NextFunction): P
     const user = await UserModel.findOne({ user: req.params.user });
 
     if (user){
-        if (!bcrypt.compareSync(ip, user.deviceIP)){
-            return res.status(500).json({
-                ok: false,
-                msg: "Este dispositivo no tiene los privilegios necesarios",
-                res: {
-                    userIP: user.deviceIP,
-                    currIP: ip
-                }
+        const userIp = user.deviceIP;
+        if (!bcrypt.compareSync(ip, userIp[0])){
+            if (userIp.length > 1){
+                for (let currIp of userIp)
+                    if (bcrypt.compareSync(ip, currIp)) next();
+            }
+            else return res.status(200).json({
+                ok: true,
+                msg: "Dispositivo no reconocido",
+                err: "Para mas ayuda informe al desarrollador",
             })
         }
     }

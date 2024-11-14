@@ -21,7 +21,7 @@ export const RegisterUser = async(req: any, res: Response): Promise<any> => {
         // Encriptamos la contraseña e ip
         const salt = bcrypt.genSaltSync();
         newUser.password = bcrypt.hashSync(password, salt);
-        newUser.deviceIP = bcrypt.hashSync(ip, salt);
+        newUser.deviceIP = [bcrypt.hashSync(ip, salt)];
 
         await newUser.save();
 

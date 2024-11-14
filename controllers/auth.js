@@ -30,7 +30,7 @@ const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // Encriptamos la contraseña e ip
         const salt = bcryptjs_1.default.genSaltSync();
         newUser.password = bcryptjs_1.default.hashSync(password, salt);
-        newUser.deviceIP = bcryptjs_1.default.hashSync(ip, salt);
+        newUser.deviceIP = [bcryptjs_1.default.hashSync(ip, salt)];
         yield newUser.save();
         return res.status(200).json({
             ok: true,
