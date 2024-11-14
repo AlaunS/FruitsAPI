@@ -15,9 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LogginUser = exports.RegisterUser = void 0;
 const User_1 = require("../models/User");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const jwt_1 = require("../helpers/jwt");
 const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     const { user, password } = req.body;
     try {
         const ip = req.clientIp;
@@ -29,21 +27,17 @@ const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             });
         }
         newUser = new User_1.UserModel(req.body);
-        // Encriptamos la contraseña
+        // Encriptamos la contraseña e ip
         const salt = bcryptjs_1.default.genSaltSync();
         newUser.password = bcryptjs_1.default.hashSync(password, salt);
-        newUser.deviceIP = ip;
+        newUser.deviceIP = bcryptjs_1.default.hashSync(ip, salt);
         yield newUser.save();
-        // Generaremos el JWT
-        const token = yield (0, jwt_1.GenerateJWT)(newUser.id, (_a = newUser.user) !== null && _a !== void 0 ? _a : "");
         return res.status(200).json({
             ok: true,
             msg: "Registro realizado exitosamente",
             res: {
                 id: newUser.id,
                 user,
-                token,
-                deviceIP: newUser.deviceIP
             }
         });
     }
@@ -57,11 +51,10 @@ const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.RegisterUser = RegisterUser;
 const LogginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a;
     const { user, password } = req.body;
     try {
         const newUser = yield User_1.UserModel.findOne({ user });
-        const ip = req.clientIp;
         if (!newUser) {
             return res.status(400).json({
                 ok: true,
@@ -76,17 +69,12 @@ const LogginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 msg: "Usuario o contraseña incorrectos"
             });
         }
-        // Generaremos el JWT
-        const token = yield (0, jwt_1.GenerateJWT)(newUser.id, (_b = newUser.user) !== null && _b !== void 0 ? _b : "");
         return res.status(201).json({
             ok: true,
             msg: "Loggin realizado exitosamente",
             res: {
                 id: newUser.id,
                 user,
-                token,
-                deviceIP: newUser.deviceIP,
-                currentIP: ip
             }
         });
     }

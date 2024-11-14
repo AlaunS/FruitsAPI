@@ -1,5 +1,6 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { UserModel } from "../../models/User";
+import bcrypt from 'bcryptjs';
 
 export const CheckSameIP = async(req: any, res: Response, next: NextFunction): Promise<any> => {
 
@@ -7,7 +8,7 @@ export const CheckSameIP = async(req: any, res: Response, next: NextFunction): P
     const user = await UserModel.findOne({ user: req.params.user });
 
     if (user){
-        if (user.deviceIP !== ip){
+        if (!bcrypt.compareSync(ip, user.deviceIP)){
             return res.status(500).json({
                 ok: false,
                 msg: "Este dispositivo no tiene los privilegios necesarios",

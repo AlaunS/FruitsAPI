@@ -1,7 +1,6 @@
 import { Response } from "express";
 import { UserModel } from "../models/User";
 import bcrypt from 'bcryptjs';
-import { GenerateJWT } from "../helpers/jwt";
 
 export const RegisterUser = async(req: any, res: Response): Promise<any> => {
 
@@ -19,15 +18,12 @@ export const RegisterUser = async(req: any, res: Response): Promise<any> => {
 
         newUser = new UserModel(req.body);
 
-        // Encriptamos la contraseña
+        // Encriptamos la contraseña e ip
         const salt = bcrypt.genSaltSync();
         newUser.password = bcrypt.hashSync(password, salt);
-        newUser.deviceIP = ip;
+        newUser.deviceIP = bcrypt.hashSync(ip, salt);
 
         await newUser.save();
-
-        // Generaremos el JWT
-        const token = await GenerateJWT(newUser.id, newUser.user ?? "");
 
         return res.status(200).json({
             ok: true,
@@ -35,8 +31,6 @@ export const RegisterUser = async(req: any, res: Response): Promise<any> => {
             res: {
                 id: newUser.id,
                 user,
-                token,
-                deviceIP: newUser.deviceIP
             }
         })
     } catch (error) {
@@ -53,7 +47,6 @@ export const LogginUser = async(req: any, res: Response): Promise<any> => {
     const { user, password } = req.body;
     try {
         const newUser = await UserModel.findOne({ user });
-        const ip = req.clientIp;
         
         if (!newUser){
             return res.status(400).json({
@@ -71,18 +64,12 @@ export const LogginUser = async(req: any, res: Response): Promise<any> => {
             })
         }
 
-        // Generaremos el JWT
-        const token = await GenerateJWT(newUser.id, newUser.user ?? "");
-
         return res.status(201).json({
             ok: true,
             msg: "Loggin realizado exitosamente",
             res: {
                 id: newUser.id,
                 user,
-                token,
-                deviceIP: newUser.deviceIP,
-                currentIP: ip
             }
         })
     } catch (error) {

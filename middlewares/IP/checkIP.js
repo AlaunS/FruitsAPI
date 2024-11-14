@@ -8,14 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CheckSameIP = void 0;
 const User_1 = require("../../models/User");
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const ip = req.clientIp;
     const user = yield User_1.UserModel.findOne({ user: req.params.user });
     if (user) {
-        if (user.deviceIP !== ip) {
+        if (!bcryptjs_1.default.compareSync(ip, user.deviceIP)) {
             return res.status(500).json({
                 ok: false,
                 msg: "Este dispositivo no tiene los privilegios necesarios",
