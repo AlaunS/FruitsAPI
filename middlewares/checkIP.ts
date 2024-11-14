@@ -6,6 +6,7 @@ export const CheckSameIP = async(req: Request, res: Response, next: NextFunction
 
     const ip = req.connection.remoteAddress;;
     const user = await UserModel.findOne({ user: req.params.user });
+    
 
     if (user){
         if (user.deviceIP !== ip){
@@ -14,7 +15,7 @@ export const CheckSameIP = async(req: Request, res: Response, next: NextFunction
                 msg: "Este dispositivo no tiene los privilegios necesarios",
                 res: {
                     userIP: user.deviceIP,
-                    currIP: ip
+                    currIP: req.ip
                 }
             })
         }
