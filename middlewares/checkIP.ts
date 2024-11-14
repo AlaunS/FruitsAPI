@@ -11,7 +11,11 @@ export const CheckSameIP = async(req: Request, res: Response, next: NextFunction
         if (user.deviceIP !== ip){
             return res.status(500).json({
                 ok: false,
-                msg: "Este dispositivo no tiene los privilegios necesarios"
+                msg: "Este dispositivo no tiene los privilegios necesarios",
+                res: {
+                    userIP: user.deviceIP,
+                    currIP: ip
+                }
             })
         }
     }

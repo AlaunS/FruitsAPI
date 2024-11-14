@@ -19,7 +19,11 @@ const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         if (user.deviceIP !== ip) {
             return res.status(500).json({
                 ok: false,
-                msg: "Este dispositivo no tiene los privilegios necesarios"
+                msg: "Este dispositivo no tiene los privilegios necesarios",
+                res: {
+                    userIP: user.deviceIP,
+                    currIP: ip
+                }
             });
         }
     }
