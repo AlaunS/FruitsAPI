@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = require("dotenv");
 const express_1 = __importDefault(require("express"));
 const config_1 = require("./database/config");
+const convertIP_1 = require("./middlewares/IP/convertIP");
 (0, dotenv_1.config)();
 // Creamos el servidor de express
 const app = (0, express_1.default)();
@@ -19,6 +20,8 @@ app.use((req, res, next) => {
 });
 app.use(express_1.default.static('public')); // Obtenemos el directorio publico
 app.use(express_1.default.json()); // Lectura y parseo del body
+// Formateamos la ip para su uso posterior
+app.use(convertIP_1.ConvertIP);
 // Rutas
 app.use('/image', require('./routes/images.js'));
 app.use('/auth', require('./routes/auth.js'));

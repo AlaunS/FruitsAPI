@@ -1,15 +1,14 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { UserModel } from "../models/User";
 import bcrypt from 'bcryptjs';
 import { GenerateJWT } from "../helpers/jwt";
-import { GenerateIP } from "../helpers/checkIp";
 
-export const RegisterUser = async(req: Request, res: Response): Promise<any> => {
+export const RegisterUser = async(req: any, res: Response): Promise<any> => {
 
     const { user, password } = req.body;
 
     try {
-        const ip = await GenerateIP();
+        const ip = req.clientIp;
         let newUser = await UserModel.findOne({ user });
         if (newUser){
             return res.status(500).json({
@@ -49,12 +48,12 @@ export const RegisterUser = async(req: Request, res: Response): Promise<any> => 
     }
 }
 
-export const LogginUser = async(req: Request, res: Response): Promise<any> => {
+export const LogginUser = async(req: any, res: Response): Promise<any> => {
 
     const { user, password } = req.body;
     try {
         const newUser = await UserModel.findOne({ user });
-        const ip = await GenerateIP();
+        const ip = req.clientIp;
         
         if (!newUser){
             return res.status(400).json({

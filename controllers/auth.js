@@ -16,12 +16,11 @@ exports.LogginUser = exports.RegisterUser = void 0;
 const User_1 = require("../models/User");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jwt_1 = require("../helpers/jwt");
-const checkIp_1 = require("../helpers/checkIp");
 const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { user, password } = req.body;
     try {
-        const ip = yield (0, checkIp_1.GenerateIP)();
+        const ip = req.clientIp;
         let newUser = yield User_1.UserModel.findOne({ user });
         if (newUser) {
             return res.status(500).json({
@@ -62,7 +61,7 @@ const LogginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { user, password } = req.body;
     try {
         const newUser = yield User_1.UserModel.findOne({ user });
-        const ip = yield (0, checkIp_1.GenerateIP)();
+        const ip = req.clientIp;
         if (!newUser) {
             return res.status(400).json({
                 ok: true,
