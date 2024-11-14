@@ -9,20 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckSameIP = void 0;
-const User_1 = require("../models/User");
-const checkIp_1 = require("../helpers/checkIp");
-const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const ip = yield (0, checkIp_1.GenerateIP)();
-    const user = yield User_1.UserModel.findOne({ user: req.params.user });
-    if (user) {
-        if (user.deviceIP !== ip) {
-            return res.status(500).json({
-                ok: false,
-                msg: "Este dispositivo no tiene los privilegios necesarios"
-            });
-        }
+exports.GenerateIP = void 0;
+const GenerateIP = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const petition = yield fetch('https://ipinfo.io/json?token=2dae2a1ef3168b');
+        const data = yield petition.json();
+        return data.ip;
     }
-    next();
+    catch (error) {
+        console.log("Fallo al obtener la IP");
+        return "";
+    }
 });
-exports.CheckSameIP = CheckSameIP;
+exports.GenerateIP = GenerateIP;

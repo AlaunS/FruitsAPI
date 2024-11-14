@@ -2,13 +2,14 @@ import { Request, Response } from "express";
 import { UserModel } from "../models/User";
 import bcrypt from 'bcryptjs';
 import { GenerateJWT } from "../helpers/jwt";
+import { GenerateIP } from "../helpers/checkIp";
 
 export const RegisterUser = async(req: Request, res: Response): Promise<any> => {
 
     const { user, password } = req.body;
 
     try {
-        const clientIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.ip)?.toString().replace("::ffff:", "");
+        const ip = await GenerateIP();
         let newUser = await UserModel.findOne({ user });
         if (newUser){
             return res.status(500).json({
@@ -22,7 +23,7 @@ export const RegisterUser = async(req: Request, res: Response): Promise<any> => 
         // Encriptamos la contraseña
         const salt = bcrypt.genSaltSync();
         newUser.password = bcrypt.hashSync(password, salt);
-        newUser.deviceIP = (clientIp ?? "").replace("::ffff:", "");
+        newUser.deviceIP = ip;
 
         await newUser.save();
 
@@ -53,7 +54,7 @@ export const LogginUser = async(req: Request, res: Response): Promise<any> => {
     const { user, password } = req.body;
     try {
         const newUser = await UserModel.findOne({ user });
-        const clientIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.ip)?.toString().replace("::ffff:", "");
+        const ip = await GenerateIP();
         
         if (!newUser){
             return res.status(400).json({
@@ -82,7 +83,7 @@ export const LogginUser = async(req: Request, res: Response): Promise<any> => {
                 user,
                 token,
                 deviceIP: newUser.deviceIP,
-                currentIP: clientIp
+                currentIP: ip
             }
         })
     } catch (error) {
