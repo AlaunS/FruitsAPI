@@ -22,7 +22,7 @@ const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                 msg: "Este dispositivo no tiene los privilegios necesarios",
                 res: {
                     userIP: user.deviceIP,
-                    currIP: req.ips
+                    currIP: req.socket.localAddress
                 }
             });
         }

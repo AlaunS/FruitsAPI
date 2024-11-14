@@ -15,7 +15,7 @@ export const CheckSameIP = async(req: Request, res: Response, next: NextFunction
                 msg: "Este dispositivo no tiene los privilegios necesarios",
                 res: {
                     userIP: user.deviceIP,
-                    currIP: req.ips
+                    currIP: req.socket.localAddress
                 }
             })
         }
