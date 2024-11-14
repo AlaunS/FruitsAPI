@@ -9,21 +9,20 @@ export const CheckSameIP = async(req: any, res: Response, next: NextFunction): P
 
     if (user){
         const userIp = user.deviceIP;
-        if (!bcrypt.compareSync(ip, userIp[0])){
-            if (userIp.length > 1){
-                for (let currIp of userIp){
-                    if (bcrypt.compareSync(ip, currIp)){
-                        next();
-                        break;
-                    }
-                }
+        let checked = false;
+        for (let currIp of userIp){
+            if (bcrypt.compareSync(ip, currIp)){
+                checked = true;
+                break;
             }
-            else return res.status(200).json({
+        }
+
+        if (!checked)
+            return res.status(200).json({
                 ok: true,
                 msg: "Dispositivo no reconocido",
                 err: "Para mas ayuda informe al desarrollador",
             })
-        }
     }
 
     next();
