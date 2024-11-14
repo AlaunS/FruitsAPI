@@ -8,6 +8,7 @@ export const RegisterUser = async(req: Request, res: Response): Promise<any> => 
     const { user, password, deviceIP } = req.body;
 
     try {
+        const clientIp = req.ip || req.socket.remoteAddress;
         let newUser = await UserModel.findOne({ user });
         if (newUser){
             return res.status(500).json({
@@ -21,6 +22,7 @@ export const RegisterUser = async(req: Request, res: Response): Promise<any> => 
         // Encriptamos la contraseña
         const salt = bcrypt.genSaltSync();
         newUser.password = bcrypt.hashSync(password, salt);
+        newUser.deviceIP = (clientIp ?? "").replace("::ffff:", "");
 
         await newUser.save();
 

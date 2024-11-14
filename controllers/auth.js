@@ -20,6 +20,7 @@ const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     var _a;
     const { user, password, deviceIP } = req.body;
     try {
+        const clientIp = req.ip || req.socket.remoteAddress;
         let newUser = yield User_1.UserModel.findOne({ user });
         if (newUser) {
             return res.status(500).json({
@@ -31,6 +32,7 @@ const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // Encriptamos la contraseña
         const salt = bcryptjs_1.default.genSaltSync();
         newUser.password = bcryptjs_1.default.hashSync(password, salt);
+        newUser.deviceIP = (clientIp !== null && clientIp !== void 0 ? clientIp : "").replace("::ffff:", "");
         yield newUser.save();
         // Generaremos el JWT
         const token = yield (0, jwt_1.GenerateJWT)(newUser.id, (_a = newUser.user) !== null && _a !== void 0 ? _a : "");
