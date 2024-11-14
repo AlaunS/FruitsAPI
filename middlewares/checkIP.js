@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CheckSameIP = void 0;
 const User_1 = require("../models/User");
 const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const ip = req.socket.remoteAddress;
+    const ip = req.connection.remoteAddress;
     ;
     const user = yield User_1.UserModel.findOne({ user: req.params.user });
     if (user) {
