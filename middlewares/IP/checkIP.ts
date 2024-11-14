@@ -13,8 +13,8 @@ export const CheckSameIP = async(req: any, res: Response, next: NextFunction): P
             if (userIp.length > 1){
                 for (let currIp of userIp){
                     if (bcrypt.compareSync(ip, currIp)){
-                        break;
                         next();
+                        break;
                     }
                 }
             }

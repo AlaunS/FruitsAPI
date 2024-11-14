@@ -24,8 +24,8 @@ const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             if (userIp.length > 1) {
                 for (let currIp of userIp) {
                     if (bcryptjs_1.default.compareSync(ip, currIp)) {
-                        break;
                         next();
+                        break;
                     }
                 }
             }
