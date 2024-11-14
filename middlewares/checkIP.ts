@@ -4,7 +4,7 @@ import { GenerateIP } from "../helpers/checkIp";
 
 export const CheckSameIP = async(req: Request, res: Response, next: NextFunction): Promise<any> => {
 
-    const ip = await GenerateIP();
+    const ip = req.socket.remoteAddress;;
     const user = await UserModel.findOne({ user: req.params.user });
 
     if (user){

@@ -11,9 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CheckSameIP = void 0;
 const User_1 = require("../models/User");
-const checkIp_1 = require("../helpers/checkIp");
 const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const ip = yield (0, checkIp_1.GenerateIP)();
+    const ip = req.socket.remoteAddress;
+    ;
     const user = yield User_1.UserModel.findOne({ user: req.params.user });
     if (user) {
         if (user.deviceIP !== ip) {
