@@ -5,7 +5,7 @@ import { CheckSameIP } from "../middlewares/checkIP";
 
 const router = Router();
 router.get('/random/:user', CheckSameIP, GetRandomImage)   // Obtenemos una imagen aleatoria
-router.get('/:name/:user', CheckSameIP, GetImage);         // Obtenemos la imagen introducida por el usuario
 router.get('/all/:user', CheckSameIP, GetAllImages);       // Obtener todas las imagenes del servicio
+router.get('/:name/:user', CheckSameIP, GetImage);         // Obtenemos la imagen introducida por el usuario
 
 module.exports = router;
