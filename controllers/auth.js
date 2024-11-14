@@ -18,7 +18,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jwt_1 = require("../helpers/jwt");
 const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { user, password, deviceIP } = req.body;
+    const { user, password } = req.body;
     try {
         const clientIp = req.ip || req.socket.remoteAddress;
         let newUser = yield User_1.UserModel.findOne({ user });
@@ -43,7 +43,7 @@ const RegisterUser = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 id: newUser.id,
                 user,
                 token,
-                deviceIP
+                deviceIP: newUser.deviceIP
             }
         });
     }

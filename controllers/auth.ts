@@ -5,7 +5,7 @@ import { GenerateJWT } from "../helpers/jwt";
 
 export const RegisterUser = async(req: Request, res: Response): Promise<any> => {
 
-    const { user, password, deviceIP } = req.body;
+    const { user, password } = req.body;
 
     try {
         const clientIp = req.ip || req.socket.remoteAddress;
@@ -36,7 +36,7 @@ export const RegisterUser = async(req: Request, res: Response): Promise<any> => 
                 id: newUser.id,
                 user,
                 token,
-                deviceIP
+                deviceIP: newUser.deviceIP
             }
         })
     } catch (error) {
