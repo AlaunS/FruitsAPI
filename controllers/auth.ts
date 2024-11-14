@@ -8,7 +8,7 @@ export const RegisterUser = async(req: Request, res: Response): Promise<any> => 
     const { user, password } = req.body;
 
     try {
-        const clientIp = req.ip || req.socket.remoteAddress;
+        const clientIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.ip)?.toString().replace("::ffff:", "");
         let newUser = await UserModel.findOne({ user });
         if (newUser){
             return res.status(500).json({
@@ -53,7 +53,7 @@ export const LogginUser = async(req: Request, res: Response): Promise<any> => {
     const { user, password } = req.body;
     try {
         const newUser = await UserModel.findOne({ user });
-        const clientIp = req.ip || req.socket.remoteAddress;
+        const clientIp = (req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.ip)?.toString().replace("::ffff:", "");
         
         if (!newUser){
             return res.status(400).json({
