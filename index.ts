@@ -1,34 +1,39 @@
 
-import { config } from 'dotenv';
 import express from 'express';
+import { config } from 'dotenv';
+import { FormatIP } from './middlewares/formatIP';
 import { DBConnection } from './database/config';
-import { ConvertIP } from './middlewares/IP/convertIP';
 config();
 
-// Creamos el servidor de express
+// Creamos una app de express
 const app = express();
 
 // Inicializar BD
 DBConnection();
 
-// Inicializamos cors
+// Permitimos peticiones de cualquier sitio
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 
-app.use(express.static('public'));      // Obtenemos el directorio publico
-app.use(express.json());                // Lectura y parseo del body
+app.use(express.static("public"));      // Obtenemos acceso a la carpeta publica
+app.use(express.json());                // Damos formato al body
 
-// Formateamos la ip para su uso posterior
-app.use(ConvertIP);
+// Formateamos la IP que nos regrese el usuario
+app.use(FormatIP);
 
-// Rutas
-app.use('/image', require('./routes/images.js'));
-app.use('/auth', require('./routes/auth.js'));
+// Rutas de desarrolo
+app.use('/api', require('./routes/development/users'));
+app.use('/api', require('./routes/development/images'));
+app.use('/api', require('./routes/development/ip'));
 
-// Escuchar peticiones
+// Rutas generales
+app.use('/food', require('./routes/general/food'));
+// app.use('/adv', require('./routes/general/advanced'));
+
+// Escuchamos peticiones
 app.listen(process.env.PORT, () => {
     console.log(`Running server in port ${ process.env.PORT }`)
 })
