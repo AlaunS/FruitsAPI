@@ -8,32 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CheckSameIP = void 0;
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const UserModel_1 = require("../models/UserModel");
 const CheckSameIP = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const ip = req.clientIp;
     const user = yield UserModel_1.UserModel.findOne({ user: req.params.user });
-    if (user) {
-        const userIp = user.ip;
-        let checked = false;
-        for (let currIp of userIp) {
-            if (bcryptjs_1.default.compareSync(ip, currIp)) {
-                checked = true;
-                break;
-            }
-        }
-        if (!checked)
-            return res.status(200).json({
-                ok: true,
-                msg: "Dispositivo no reconocido",
-                err: "Para mas ayuda informe al desarrollador",
-            });
-    }
+    // if (user){
+    //     const userIp = user.ip;
+    //     let checked = false;
+    //     for (let currIp of userIp){
+    //         if (bcrypt.compareSync(ip, currIp)){
+    //             checked = true;
+    //             break;
+    //         }
+    //     }
+    //     if (!checked)
+    //         return res.status(200).json({
+    //             ok: true,
+    //             msg: "Dispositivo no reconocido",
+    //             err: "Para mas ayuda informe al desarrollador",
+    //         })
+    // }
     next();
 });
 exports.CheckSameIP = CheckSameIP;
