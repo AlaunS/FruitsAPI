@@ -7,23 +7,23 @@ export const CheckSameIP = async(req: any, res: Response, next: NextFunction): P
     const ip = req.clientIp;
     const user = await UserModel.findOne({ user: req.params.user });
 
-    if (user){
-        const userIp = user.ip;
-        let checked = false;
-        for (let currIp of userIp){
-            if (bcrypt.compareSync(ip, currIp)){
-                checked = true;
-                break;
-            }
-        }
+    // if (user){
+    //     const userIp = user.ip;
+    //     let checked = false;
+    //     for (let currIp of userIp){
+    //         if (bcrypt.compareSync(ip, currIp)){
+    //             checked = true;
+    //             break;
+    //         }
+    //     }
 
-        if (!checked)
-            return res.status(200).json({
-                ok: true,
-                msg: "Dispositivo no reconocido",
-                err: "Para mas ayuda informe al desarrollador",
-            })
-    }
+    //     if (!checked)
+    //         return res.status(200).json({
+    //             ok: true,
+    //             msg: "Dispositivo no reconocido",
+    //             err: "Para mas ayuda informe al desarrollador",
+    //         })
+    // }
 
     next();
 }

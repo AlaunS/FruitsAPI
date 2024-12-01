@@ -7,17 +7,17 @@ import { CheckSameIP } from "../../middlewares/checkIP";
 
 const router = Router();
 router.get('/images/:user', [
-    // CheckSameIP
+    
 ], GetFruits);
 
 router.get('/category/:user', [
-    // CheckSameIP,
+    
     check("category", "Introduzca una categoria valida").isLength({ min: 4 }),
     ValidateFields
 ], GetFruitsByCategory);
 
 router.get('/categories/:user', [
-    // CheckSameIP
+    
 ], GetAllFruitsCategories);
 
 module.exports = router;
